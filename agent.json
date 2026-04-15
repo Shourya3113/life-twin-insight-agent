@@ -1,0 +1,24 @@
+{
+    "name": "Life Twin Insight Agent",
+    "version": "1.0.0",
+    "description": "An explainable AI agent that transforms sleep, energy, focus, stress, and habit-loop questions into SMILE-based digital twin optimization insights.",
+    "author": "Shourya Solanki",
+    "capabilities": [
+      "personal health digital twin guidance",
+      "human performance optimization",
+      "sleep and recovery insights",
+      "habit loop analysis",
+      "SMILE methodology explainability"
+    ],
+    "tools_used": [
+      "smile_overview",
+      "get_insights",
+      "query_knowledge"
+    ],
+    "input_examples": [
+      "Why do I crash every afternoon?",
+      "How can I improve my sleep-workout-focus loop?",
+      "What habits are reducing my productivity?"
+    ],
+    "output_style": "Explainable optimization report with explicit source provenance"
+  }
