@@ -42,3 +42,25 @@ This directly connects to my broader interest in:
 ## Usage
 ```bash
 python agent.py "Why do I crash every afternoon?"
+
+
+## Setup Instructions
+### Requirements
+- Python 3.10+
+- Node.js
+- Built `lpi-developer-kit` sandbox (`npm install && npm run build`)
+
+### Install dependencies
+```bash
+pip install -r requirements.txt
+
+Run the agent
+python3 agent.py "Why do I crash every afternoon?"
+
+How bad input is handled
+- If no question is provided → usage help is shown
+- If the question is too short → a descriptive error is returned
+- If the sandbox build is missing → a safe setup error is shown
+- Unexpected runtime errors are caught gracefully
+
+open -a "Visual Studio Code" agent.py

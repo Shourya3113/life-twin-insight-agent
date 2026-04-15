@@ -106,8 +106,20 @@ def run_agent(question: str):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print('Usage: python agent.py "Why do I crash every afternoon?"')
-        sys.exit(1)
+    try:
+        if len(sys.argv) < 2:
+            print('Usage: python3 agent.py "Why do I crash every afternoon?"')
+            sys.exit(1)
 
-    run_agent(sys.argv[1])
+        question = sys.argv[1].strip()
+
+        if len(question) < 5:
+            print("[ERROR] Please provide a more descriptive question.")
+            sys.exit(1)
+
+        run_agent(question)
+
+    except FileNotFoundError:
+        print("[ERROR] LPI sandbox build not found. Run npm install && npm run build first.")
+    except Exception as e:
+        print(f"[ERROR] Agent failed safely: {e}")
