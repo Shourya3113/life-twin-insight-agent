@@ -1,76 +1,43 @@
 # HOW I BUILT THE LIFE TWIN INSIGHT AGENT
 
-## 1) What I built
-I built a **human performance digital twin agent** that helps translate questions around sleep quality, energy crashes, focus depth, stress, and workout consistency into structured SMILE-based optimization insights.
+## What I built
+A personal human optimization agent that takes a user's question about sleep,
+energy crashes, focus, or habits and returns a SMILE-grounded answer synthesized
+by a local LLM — with full tool provenance.
 
-The goal was to make the agent feel like the first layer of a personal life operating system that can help users understand why their performance fluctuates and what recovery or optimization actions they should take.
+## Step-by-step
 
----
+1. Set up the LPI sandbox — resolved npm and macOS pip issues, passed 8/8 tool tests
+2. Studied examples/agent.py to understand MCP subprocess communication and JSON-RPC
+3. Built the agent with direct MCP calls (no LangChain/CrewAI)
+4. Added Ollama integration using stdlib urllib — no external dependencies
+5. Made query_knowledge use the actual user question dynamically, not a hardcoded string
+6. Added auto path detection so the repo root resolves relative to the script
 
-## 2) Step-by-step workflow
-### Step 1 — LPI sandbox setup
-I first completed the full LPI sandbox setup:
-- installed Node.js
-- resolved npm compatibility and cache issues
-- ran `npm run build`
-- successfully passed all **8/8 LPI tool tests**
+## Problems I hit
+- macOS blocked pip system-wide — fixed with venv
+- Campus WiFi blocked PyPI — dropped requests entirely, used urllib from stdlib
+- Initial agent didn't call an LLM at all — rewrote to pass tool outputs to qwen2.5:1.5b
+- Hardcoded desktop path wouldn't work on other machines — switched to relative path detection
 
-This gave me confidence that the MCP tool layer was stable.
+## Choices I made that weren't in the instructions
+I skipped LangChain and CrewAI even though they were suggested. I wanted to
+understand the MCP protocol directly — the JSON-RPC handshake, initialize sequence,
+tool call structure — before abstracting it away. If I can't explain what a library
+does underneath, I don't trust it.
 
-### Step 2 — studied the example agent
-I studied the provided `examples/agent.py` to understand:
-- subprocess-based MCP communication
-- JSON-RPC tool calling
-- initialization handshake
-- provenance tracking
+I also focused the agent on personal health optimization rather than building a
+generic SMILE explainer. My Level 1 my_twin answer was about tracking afternoon
+energy crashes — so I built the agent to actually answer that question.
 
-### Step 3 — customized for human optimization
-Instead of building a generic methodology agent, I focused on a **personal health and performance digital twin use case**, because this aligns strongly with my research interests in AI, human optimization, and adaptive systems.
+## What I'd do differently
+I'd make tool selection dynamic — right now it always calls the same 3 tools
+regardless of the question. A smarter agent would route to different tools based
+on what the question is actually about. I'd also add streaming output so the
+response appears token by token instead of making the user wait.
 
-I selected these tools:
-- `smile_overview`
-- `get_insights`
-- `query_knowledge`
-
-to combine methodology, personal health guidance, and performance optimization context.
-
-### Step 4 — explainability layer
-I made sure the final report clearly lists:
-- which tools were used
-- why each tool contributed
-- how the output maps to the user’s question
-
-This was important because explainable AI is one of the strongest evaluation criteria in the program.
-
----
-
-## 3) Problems I hit and how I solved them
-The biggest challenge was **environment setup on macOS over campus Wi-Fi**.
-
-I faced:
-- DNS failures with GitHub
-- npm version instability
-- cache permission issues
-- Ollama registry DNS issues
-
-I solved these by:
-- switching DNS servers
-- moving Git to SSH authentication
-- downgrading npm to a stable version
-- fixing cache ownership issues
-- validating the full sandbox before building the agent
-
-This taught me the importance of solving infrastructure friction early before building product logic.
-
----
-
-## 4) What I learned
-The biggest thing I learned was how **MCP turns tools into modular reasoning building blocks**.
-
-Rather than making the LLM “know everything,” the agent becomes much more reliable when it:
-1. queries specialized tools
-2. grounds answers in methodology
-3. exposes clear provenance
-
-This project changed how I think about building AI systems:
-the strongest systems are not just smart, they are **structured, explainable, and deeply connected to real-world feedback loops**.
+## What I learned
+MCP turns tools into modular reasoning building blocks. The agent doesn't need
+to know everything — it queries specialized tools, grounds answers in methodology,
+and exposes provenance. The strongest AI systems are not just smart, they are
+structured, explainable, and connected to real feedback loops.
